@@ -171,24 +171,12 @@ function App() {
         <a className="brand" href="/" aria-label="MBA Cohort home"><span className="brand-mark"><Users size={19} /></span><span><strong>MBA</strong><em>COHORT</em></span></a>
         <nav className={menuOpen ? 'header-nav nav-open' : 'header-nav'}>
           <a href="#events" onClick={() => setMenuOpen(false)}>Events</a>
-          <a href="#about" onClick={() => setMenuOpen(false)}>About</a>
           <a className="header-submit" href={GOOGLE_FORM_URL} target="_blank" rel="noreferrer" onClick={() => setMenuOpen(false)}>Submit an event <ExternalLink size={14} /></a>
         </nav>
         <button className="menu-button" type="button" aria-label="Toggle menu" onClick={() => setMenuOpen((open) => !open)}>{menuOpen ? <X size={21} /> : <Menu size={21} />}</button>
       </header>
 
       <main>
-        <section className="hero" id="about">
-          <div className="hero-orbit orbit-one" /><div className="hero-orbit orbit-two" />
-          <div className="hero-inner">
-            <div className="eyebrow hero-eyebrow"><span className="live-dot" /> COHORT CALENDAR <span className="hero-rule" /></div>
-            <h1>Make the most<br /><i>of your MBA.</i></h1>
-            <p>Your shared space for the moments between the lectures. Find what’s happening, save the date, and show up.</p>
-            <a className="primary-button" href="#events">See upcoming events <ArrowUpRight size={17} /></a>
-          </div>
-          <div className="hero-footnote"><span>01</span><div /><span>2026 / 27</span></div>
-        </section>
-
         <section className="events-section" id="events">
           <div className="section-heading"><div><span className="section-kicker">THE CALENDAR</span><h2>What’s coming up</h2></div><button className="refresh-button" type="button" onClick={() => void loadEvents()} disabled={loading}><RefreshCw size={16} className={loading ? 'spin' : ''} /> Refresh</button></div>
           {error && <div className="notice"><span>{usingSampleData ? 'Preview mode' : 'Notice'}</span>{error}</div>}
