@@ -89,7 +89,7 @@ function EventDate({ date, prominent = false }: { date: string; prominent?: bool
   );
 }
 
-function NextEvent({ event }: { event: Event }) {
+function NextEventCard({ event }: { event: Event }) {
   const formatted = formatDate(event.date);
   return (
     <article className="next-event-card">
@@ -112,6 +112,20 @@ function NextEvent({ event }: { event: Event }) {
       <div className="next-event-ring ring-one" />
       <div className="next-event-ring ring-two" />
     </article>
+  );
+}
+
+function NextUp({ events }: { events: Event[] }) {
+  if (events.length === 0) return null;
+  if (events.length === 1) return <NextEventCard event={events[0]} />;
+  return (
+    <div className="next-up-carousel" role="region" aria-label="Next up events">
+      {events.map((event) => (
+        <div className="next-up-carousel-slide" key={event.id}>
+          <NextEventCard event={event} />
+        </div>
+      ))}
+    </div>
   );
 }
 
@@ -162,8 +176,12 @@ function App() {
   useEffect(() => { void loadEvents(); }, []);
 
   const visibleEvents = useMemo(() => filter === 'All' ? events : events.filter((event) => event.category.toLowerCase() === filter.toLowerCase()), [events, filter]);
-  const nextEvent = visibleEvents[0];
-  const laterEvents = visibleEvents.slice(1);
+  const nextDayEvents = useMemo(() => {
+    if (visibleEvents.length === 0) return [];
+    const earliestDate = visibleEvents[0].date;
+    return visibleEvents.filter((event) => event.date === earliestDate);
+  }, [visibleEvents]);
+  const laterEvents = useMemo(() => visibleEvents.slice(nextDayEvents.length), [visibleEvents, nextDayEvents]);
 
   return (
     <div className="app-shell">
@@ -181,7 +199,7 @@ function App() {
           <div className="section-heading"><div><span className="section-kicker">THE CALENDAR</span><h2>What’s coming up</h2></div><button className="refresh-button" type="button" onClick={() => void loadEvents()} disabled={loading}><RefreshCw size={16} className={loading ? 'spin' : ''} /> Refresh</button></div>
           {error && <div className="notice"><span>{usingSampleData ? 'Preview mode' : 'Notice'}</span>{error}</div>}
           <div className="filters" role="group" aria-label="Filter events by category">{categories.map((category) => <button key={category} className={filter === category ? 'filter-button active' : 'filter-button'} type="button" onClick={() => setFilter(category)}>{filter === category && <Check size={14} />}{category}</button>)}</div>
-          {loading ? <div className="loading-state"><LoaderCircle className="spin" size={26} /><span>Checking the calendar…</span></div> : visibleEvents.length === 0 ? <div className="empty-state"><CalendarDays size={28} /><h3>No {filter === 'All' ? '' : filter.toLowerCase()} events coming up</h3><p>Check back soon or suggest one for the cohort.</p></div> : <><NextEvent event={nextEvent} />{laterEvents.length > 0 && <div className="later-events"><div className="list-heading"><span>MORE ON THE HORIZON</span><span>{laterEvents.length} {laterEvents.length === 1 ? 'event' : 'events'}</span></div><div className="event-list">{laterEvents.map((event) => <EventRow event={event} key={event.id} />)}</div></div>}</>}
+          {loading ? <div className="loading-state"><LoaderCircle className="spin" size={26} /><span>Checking the calendar…</span></div> : visibleEvents.length === 0 ? <div className="empty-state"><CalendarDays size={28} /><h3>No {filter === 'All' ? '' : filter.toLowerCase()} events coming up</h3><p>Check back soon or suggest one for the cohort.</p></div> : <><NextUp events={nextDayEvents} />{laterEvents.length > 0 && <div className="later-events"><div className="list-heading"><span>MORE ON THE HORIZON</span><span>{laterEvents.length} {laterEvents.length === 1 ? 'event' : 'events'}</span></div><div className="event-list">{laterEvents.map((event) => <EventRow event={event} key={event.id} />)}</div></div>}</>}
         </section>
 
         <section className="cta-section"><div><span className="section-kicker">MAKE IT HAPPEN</span><h2>Got something<br /><i>to share?</i></h2></div><a className="outline-button" href={GOOGLE_FORM_URL} target="_blank" rel="noreferrer">Submit an event <ArrowUpRight size={17} /></a></section>
