@@ -70,7 +70,7 @@ function NextEvent({ event }: { event: Event }) {
             <div className="event-meta"><CategoryBadge category={event.category} /><span>{formatted.weekday}</span></div>
             <h2>{event.name}</h2>
             <EventLocation location={event.location} />
-            <p>{event.description || 'More details will be shared soon.'}</p>
+            <p style={{ whiteSpace: 'pre-wrap' }}>{event.description || 'More details will be shared soon.'}</p>
             <div className="event-time"><Clock3 size={15} /> {event.time || 'Time TBC'} <span>•</span> {formatted.full}</div>
             <EventLink link={event.link} />
           </div>
@@ -91,7 +91,7 @@ function EventRow({ event }: { event: Event }) {
         <div className="event-meta"><CategoryBadge category={event.category} /><span>{formatted.weekday}</span></div>
         <h3>{event.name}</h3>
         <EventLocation location={event.location} />
-        {event.description && <p>{event.description}</p>}
+        {event.description && <p style={{ whiteSpace: 'pre-wrap' }}>{event.description}</p>}
         <EventLink link={event.link} />
       </div>
       <div className="event-row-time"><Clock3 size={15} />{event.time || 'TBC'}<ChevronRight size={17} /></div>
