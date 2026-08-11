@@ -9,10 +9,10 @@ const categories = ['All', 'Social', 'Academic', 'Club', 'Admin'] as const;
 type CategoryFilter = (typeof categories)[number];
 
 const sampleEvents: Event[] = [
-  { id: 'sample-1', name: 'Cohort Welcome Drinks', date: '2026-09-03', time: '18:30', category: 'Social', description: 'Meet your cohort over drinks and small plates at The Foundry.', link: '' },
-  { id: 'sample-2', name: 'Case Interview Workshop', date: '2026-09-08', time: '17:30', category: 'Academic', description: 'A practical session on structuring cases with second-year mentors.', link: '' },
-  { id: 'sample-3', name: 'Sailing Club Taster', date: '2026-09-12', time: '10:00', category: 'Club', description: 'Try something new on the water. No previous experience needed.', link: '' },
-  { id: 'sample-4', name: 'Programme Town Hall', date: '2026-09-16', time: '12:30', category: 'Admin', description: 'Important programme updates, followed by an open Q&A.', link: '' },
+  { id: 'sample-1', name: 'Cohort Welcome Drinks', date: '2026-09-03', time: '18:30', category: 'Social', description: 'Meet your cohort over drinks and small plates at The Foundry.', link: '', location: 'The Foundry, King’s Cross' },
+  { id: 'sample-2', name: 'Case Interview Workshop', date: '2026-09-08', time: '17:30', category: 'Academic', description: 'A practical session on structuring cases with second-year mentors.', link: '', location: 'Seminar Room B, Business School' },
+  { id: 'sample-3', name: 'Sailing Club Taster', date: '2026-09-12', time: '10:00', category: 'Club', description: 'Try something new on the water. No previous experience needed.', link: '', location: 'Royal Yacht Club Marina' },
+  { id: 'sample-4', name: 'Programme Town Hall', date: '2026-09-16', time: '12:30', category: 'Admin', description: 'Important programme updates, followed by an open Q&A.', link: '', location: '' },
 ];
 
 function formatDate(date: string): { day: string; month: string; weekday: string; full: string } {
@@ -42,6 +42,11 @@ function EventLink({ link }: { link: string }) {
   return <a className="event-link-button" href={link} target="_blank" rel="noreferrer">Open Link <ArrowUpRight size={15} /></a>;
 }
 
+function EventLocation({ location }: { location: string }) {
+  if (!location) return null;
+  return <div className="event-location">📍 {location}</div>;
+}
+
 function EventDate({ date, prominent = false }: { date: string; prominent?: boolean }) {
   const formatted = formatDate(date);
   return (
@@ -64,6 +69,7 @@ function NextEvent({ event }: { event: Event }) {
           <div className="next-event-copy">
             <div className="event-meta"><CategoryBadge category={event.category} /><span>{formatted.weekday}</span></div>
             <h2>{event.name}</h2>
+            <EventLocation location={event.location} />
             <p>{event.description || 'More details will be shared soon.'}</p>
             <div className="event-time"><Clock3 size={15} /> {event.time || 'Time TBC'} <span>•</span> {formatted.full}</div>
             <EventLink link={event.link} />
@@ -84,6 +90,7 @@ function EventRow({ event }: { event: Event }) {
       <div className="event-row-copy">
         <div className="event-meta"><CategoryBadge category={event.category} /><span>{formatted.weekday}</span></div>
         <h3>{event.name}</h3>
+        <EventLocation location={event.location} />
         {event.description && <p>{event.description}</p>}
         <EventLink link={event.link} />
       </div>

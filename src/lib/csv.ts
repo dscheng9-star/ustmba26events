@@ -8,6 +8,7 @@ export interface Event {
   category: EventCategory;
   description: string;
   link: string;
+  location: string;
 }
 
 function parseCsvRows(csv: string): string[][] {
@@ -63,6 +64,7 @@ export function parseEventsCsv(csv: string): Event[] {
   const categoryIndex = indexOf(['category']);
   const descriptionIndex = indexOf(['description', 'details']);
   const linkIndex = indexOf(['link', 'url']);
+  const locationIndex = indexOf(['location', 'venue', 'place']);
 
   return rows.slice(1).flatMap((row, index) => {
     const event: Event = {
@@ -73,6 +75,7 @@ export function parseEventsCsv(csv: string): Event[] {
       category: row[categoryIndex] ?? 'Other',
       description: row[descriptionIndex] ?? '',
       link: row[linkIndex] ?? '',
+      location: row[locationIndex] ?? '',
     };
 
     return event.name && event.date ? [event] : [];

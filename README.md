@@ -15,9 +15,10 @@ The dashboard also contains clearly labeled fallback placeholders for both value
 
 ## 2. Publish the Events tab as CSV
 
-1. Create a Google Sheet with an `Events` tab containing: `Event Name`, `Date`, `Time`, `Category`, `Description`, and `Link`.
+1. Create a Google Sheet with an `Events` tab containing: `Event Name`, `Date`, `Time`, `Category`, `Description`, `Link`, and `Location`.
 2. Use `Link` for an optional full URL. When populated, the dashboard shows an **Open Link** button that opens in a new tab.
-3. Format dates as `YYYY-MM-DD` and times as `HH:MM` in 24-hour time.
+3. Use `Location` for an optional plain-text venue. When populated, the dashboard shows it with a pin emoji.
+4. Format dates as `YYYY-MM-DD` and times as `HH:MM` in 24-hour time.
 4. In Google Sheets, choose **File → Share → Publish to web**.
 5. Select the `Events` tab and choose **CSV**, then publish it.
 6. Copy the published CSV URL into `VITE_SHEET_CSV_URL`.
@@ -26,7 +27,7 @@ The app filters out past dates, ignores empty rows, and sorts events chronologic
 
 ## 3. Connect the Google Form
 
-1. Create a Google Form with `Event Name`, `Date`, `Time`, `Category`, `Description`, and optional `Link` fields.
+1. Create a Google Form with `Event Name`, `Date`, `Time`, `Category`, `Description`, optional `Link`, and optional `Location` fields.
 2. In the Form’s Responses tab, link responses to the same Google Sheet.
 3. Keep responses in a separate `Submissions` tab. Add a `Status` column with `Pending`, `Approved`, or `Rejected` values.
 4. Turn on **Responses → Get email notifications for new responses**.
