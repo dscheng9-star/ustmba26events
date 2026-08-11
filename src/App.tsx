@@ -29,6 +29,33 @@ function CategoryBadge({ category }: { category: string }) {
   return <span className={`category-badge category-${category.toLowerCase()}`}>{category}</span>;
 }
 
+function linkLabel(link: string): string {
+  try {
+    const host = new URL(link).hostname.replace(/^www\./, '');
+    if (host.includes('wa.me') || host.includes('whatsapp.com')) return 'Join WhatsApp chat';
+    if (host.includes('chat.whatsapp.com')) return 'Join WhatsApp group';
+    if (host.includes('maps.google') || host.includes('maps.app.goo.gl')) return 'Open in Google Maps';
+    if (host.includes('google.com') && host.includes('calendar')) return 'Add to Google Calendar';
+    if (host.includes('zoom.us')) return 'Join Zoom meeting';
+    if (host.includes('teams.microsoft.com')) return 'Join Teams meeting';
+    if (host.includes('meet.google.com')) return 'Join Google Meet';
+    if (host.includes('eventbrite.com')) return 'View on Eventbrite';
+    if (host.includes('lu.ma') || host.includes('luma')) return 'View on Luma';
+    if (host.includes('forms.gle') || (host.includes('google.com') && host.includes('forms'))) return 'Open Google Form';
+    if (host.includes('docs.google.com')) return 'Open Google Doc';
+    if (host.includes('youtube.com') || host.includes('youtu.be')) return 'Watch on YouTube';
+    if (host.includes('instagram.com')) return 'View on Instagram';
+    if (host.includes('facebook.com')) return 'View on Facebook';
+    if (host.includes('linkedin.com')) return 'View on LinkedIn';
+    if (host.includes('slack.com')) return 'Open in Slack';
+    if (host.includes('discord.com') || host.includes('discord.gg')) return 'Join Discord server';
+    if (host.includes('t.me')) return 'Open Telegram channel';
+    return `Open ${host}`;
+  } catch {
+    return 'Open link';
+  }
+}
+
 function EventLink({ link }: { link: string }) {
   if (!link) return null;
 
@@ -39,7 +66,7 @@ function EventLink({ link }: { link: string }) {
     return null;
   }
 
-  return <a className="event-link-button" href={link} target="_blank" rel="noreferrer">Open Link <ArrowUpRight size={15} /></a>;
+  return <a className="event-link-button" href={link} target="_blank" rel="noreferrer">{linkLabel(link)} <ArrowUpRight size={15} /></a>;
 }
 
 function EventLocation({ location }: { location: string }) {
