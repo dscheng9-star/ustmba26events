@@ -9,10 +9,10 @@ const categories = ['All', 'Social', 'Academic', 'Club', 'Admin'] as const;
 type CategoryFilter = (typeof categories)[number];
 
 const sampleEvents: Event[] = [
-  { id: 'sample-1', name: 'Cohort Welcome Drinks', date: '2026-09-03', time: '18:30', category: 'Social', description: 'Meet your cohort over drinks and small plates at The Foundry.', link: '', location: 'The Foundry, King’s Cross' },
-  { id: 'sample-2', name: 'Case Interview Workshop', date: '2026-09-08', time: '17:30', category: 'Academic', description: 'A practical session on structuring cases with second-year mentors.', link: '', location: 'Seminar Room B, Business School' },
-  { id: 'sample-3', name: 'Sailing Club Taster', date: '2026-09-12', time: '10:00', category: 'Club', description: 'Try something new on the water. No previous experience needed.', link: '', location: 'Royal Yacht Club Marina' },
-  { id: 'sample-4', name: 'Programme Town Hall', date: '2026-09-16', time: '12:30', category: 'Admin', description: 'Important programme updates, followed by an open Q&A.', link: '', location: '' },
+  { id: 'sample-1', name: 'Cohort Welcome Drinks', date: '2026-09-03', time: '18:30', category: 'Social', description: 'Meet your cohort over drinks and small plates at The Foundry.', link: '', location: 'The Foundry, King’s Cross', contact: '' },
+  { id: 'sample-2', name: 'Case Interview Workshop', date: '2026-09-08', time: '17:30', category: 'Academic', description: 'A practical session on structuring cases with second-year mentors.', link: '', location: 'Seminar Room B, Business School', contact: '' },
+  { id: 'sample-3', name: 'Sailing Club Taster', date: '2026-09-12', time: '10:00', category: 'Club', description: 'Try something new on the water. No previous experience needed.', link: '', location: 'Royal Yacht Club Marina', contact: '' },
+  { id: 'sample-4', name: 'Programme Town Hall', date: '2026-09-16', time: '12:30', category: 'Admin', description: 'Important programme updates, followed by an open Q&A.', link: '', location: '', contact: '' },
 ];
 
 function formatDate(date: string): { day: string; month: string; weekday: string; full: string } {
@@ -74,6 +74,11 @@ function EventLocation({ location }: { location: string }) {
   return <div className="event-location">📍 {location}</div>;
 }
 
+function EventContact({ contact }: { contact: string }) {
+  if (!contact) return null;
+  return <div className="event-contact">👤 {contact}</div>;
+}
+
 function EventDate({ date, prominent = false }: { date: string; prominent?: boolean }) {
   const formatted = formatDate(date);
   return (
@@ -98,6 +103,7 @@ function NextEvent({ event }: { event: Event }) {
             <h2>{event.name}</h2>
             <EventLocation location={event.location} />
             <p style={{ whiteSpace: 'pre-wrap' }}>{event.description || 'More details will be shared soon.'}</p>
+            <EventContact contact={event.contact} />
             <div className="event-time"><Clock3 size={15} /> {event.time || 'Time TBC'} <span>•</span> {formatted.full}</div>
             <EventLink link={event.link} />
           </div>
@@ -119,6 +125,7 @@ function EventRow({ event }: { event: Event }) {
         <h3>{event.name}</h3>
         <EventLocation location={event.location} />
         {event.description && <p style={{ whiteSpace: 'pre-wrap' }}>{event.description}</p>}
+        <EventContact contact={event.contact} />
         <EventLink link={event.link} />
       </div>
       <div className="event-row-time"><Clock3 size={15} />{event.time || 'TBC'}<ChevronRight size={17} /></div>

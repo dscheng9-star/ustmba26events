@@ -9,6 +9,7 @@ export interface Event {
   description: string;
   link: string;
   location: string;
+  contact: string;
 }
 
 function parseCsvRows(csv: string): string[][] {
@@ -65,6 +66,7 @@ export function parseEventsCsv(csv: string): Event[] {
   const descriptionIndex = indexOf(['description', 'details']);
   const linkIndex = indexOf(['link', 'url']);
   const locationIndex = indexOf(['location', 'venue', 'place']);
+  const contactIndex = indexOf(['contact', 'contactperson', 'organizer']);
 
   return rows.slice(1).flatMap((row, index) => {
     const event: Event = {
@@ -76,6 +78,7 @@ export function parseEventsCsv(csv: string): Event[] {
       description: row[descriptionIndex] ?? '',
       link: row[linkIndex] ?? '',
       location: row[locationIndex] ?? '',
+      contact: row[contactIndex] ?? '',
     };
 
     return event.name && event.date ? [event] : [];
