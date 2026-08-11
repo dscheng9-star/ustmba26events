@@ -9,10 +9,10 @@ const categories = ['All', 'Social', 'Academic', 'Club', 'Admin'] as const;
 type CategoryFilter = (typeof categories)[number];
 
 const sampleEvents: Event[] = [
-  { id: 'sample-1', name: 'Cohort Welcome Drinks', date: '2026-09-03', time: '18:30', category: 'Social', description: 'Meet your cohort over drinks and small plates at The Foundry.' },
-  { id: 'sample-2', name: 'Case Interview Workshop', date: '2026-09-08', time: '17:30', category: 'Academic', description: 'A practical session on structuring cases with second-year mentors.' },
-  { id: 'sample-3', name: 'Sailing Club Taster', date: '2026-09-12', time: '10:00', category: 'Club', description: 'Try something new on the water. No previous experience needed.' },
-  { id: 'sample-4', name: 'Programme Town Hall', date: '2026-09-16', time: '12:30', category: 'Admin', description: 'Important programme updates, followed by an open Q&A.' },
+  { id: 'sample-1', name: 'Cohort Welcome Drinks', date: '2026-09-03', time: '18:30', category: 'Social', description: 'Meet your cohort over drinks and small plates at The Foundry.', link: '' },
+  { id: 'sample-2', name: 'Case Interview Workshop', date: '2026-09-08', time: '17:30', category: 'Academic', description: 'A practical session on structuring cases with second-year mentors.', link: '' },
+  { id: 'sample-3', name: 'Sailing Club Taster', date: '2026-09-12', time: '10:00', category: 'Club', description: 'Try something new on the water. No previous experience needed.', link: '' },
+  { id: 'sample-4', name: 'Programme Town Hall', date: '2026-09-16', time: '12:30', category: 'Admin', description: 'Important programme updates, followed by an open Q&A.', link: '' },
 ];
 
 function formatDate(date: string): { day: string; month: string; weekday: string; full: string } {
@@ -27,6 +27,19 @@ function formatDate(date: string): { day: string; month: string; weekday: string
 
 function CategoryBadge({ category }: { category: string }) {
   return <span className={`category-badge category-${category.toLowerCase()}`}>{category}</span>;
+}
+
+function EventLink({ link }: { link: string }) {
+  if (!link) return null;
+
+  try {
+    const url = new URL(link);
+    if (!['http:', 'https:'].includes(url.protocol)) return null;
+  } catch {
+    return null;
+  }
+
+  return <a className="event-link-button" href={link} target="_blank" rel="noreferrer">Open Link <ArrowUpRight size={15} /></a>;
 }
 
 function EventDate({ date, prominent = false }: { date: string; prominent?: boolean }) {
@@ -53,6 +66,7 @@ function NextEvent({ event }: { event: Event }) {
             <h2>{event.name}</h2>
             <p>{event.description || 'More details will be shared soon.'}</p>
             <div className="event-time"><Clock3 size={15} /> {event.time || 'Time TBC'} <span>•</span> {formatted.full}</div>
+            <EventLink link={event.link} />
           </div>
         </div>
       </div>
@@ -71,6 +85,7 @@ function EventRow({ event }: { event: Event }) {
         <div className="event-meta"><CategoryBadge category={event.category} /><span>{formatted.weekday}</span></div>
         <h3>{event.name}</h3>
         {event.description && <p>{event.description}</p>}
+        <EventLink link={event.link} />
       </div>
       <div className="event-row-time"><Clock3 size={15} />{event.time || 'TBC'}<ChevronRight size={17} /></div>
     </article>
