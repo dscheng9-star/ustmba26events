@@ -233,10 +233,13 @@ function CalendarView({ events }: { events: Event[] }) {
             >
               <span className="cal-day-num">{cell.day}</span>
               {dayEvents.length > 0 && (
-                <span className="cal-dots">
-                  {dayEvents.slice(0, 3).map((ev, di) => (
-                    <span key={di} className="cal-dot" style={{ background: catColor(ev.category) }} />
+                <span className="cal-event-chips">
+                  {dayEvents.slice(0, 2).map((ev, di) => (
+                    <span key={di} className="cal-event-chip" style={{ borderLeftColor: catColor(ev.category) }}>
+                      {ev.name}
+                    </span>
                   ))}
+                  {dayEvents.length > 2 && <span className="cal-event-more">+{dayEvents.length - 2} more</span>}
                 </span>
               )}
             </button>
